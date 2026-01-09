@@ -20,21 +20,23 @@ const form = ref({
 
 // Fetch tasks from API
 const fetchTasks = async () => {
-  try {
-    let url = `/api/tasks?page=${currentPage.value}`
-    if (filterStatus.value !== 'all') url += `&status=${filterStatus.value}`
-    const res = await axios.get(url)
-    tasks.value = res.data.data || []
-    pagination.value = {
-      current_page: res.data.current_page,
-      last_page: res.data.last_page
-    }
-  } catch (e) {
-    console.error(e)
-    tasks.value = []
-    pagination.value = {}
+  let url = `/api/tasks?page=${currentPage.value}`
+  if (filterStatus.value !== 'all') {
+    url += `&status=${filterStatus.value}`
+  }
+
+  const res = await axios.get(url)
+
+  // DATA
+  tasks.value = res.data.data || []
+
+  // PAGINATION (THIS IS THE FIX)
+  pagination.value = {
+    current_page: res.data.meta.current_page,
+    last_page: res.data.meta.last_page
   }
 }
+
 
 // Watch pagination & filter
 watch(currentPage, fetchTasks)
