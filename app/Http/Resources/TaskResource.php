@@ -14,7 +14,7 @@ class TaskResource extends JsonResource
             'title' => $this->title,
             'description' => $this->description,
             'status' => $this->status,
-            'due_date' => optional($this->due_date)->format('Y-m-d'),
+            'due_date' => $this->due_date?->format('Y-m-d'),
             'created_at' => $this->created_at->toDateTimeString(),
         ];
     }

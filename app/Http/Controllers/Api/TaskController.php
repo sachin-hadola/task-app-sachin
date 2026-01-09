@@ -12,21 +12,19 @@ use Illuminate\Http\Request;
 
 class TaskController extends Controller
 {
-    public function index(Request $request): JsonResponse
+    public function index(Request $request)
     {
         $query = Task::query();
 
         // Filter by status
-        if ($request->has('status') && in_array($request->status, ['pending', 'in_progress', 'completed'])) {
+        if ($request->has('status') && $request->status !== 'all') {
             $query->where('status', $request->status);
         }
 
         // Paginate
-        $tasks = $query->orderBy('created_at', 'desc')->paginate(10);
+        $tasks = $query->orderBy('id', 'desc')->paginate(10);
 
-        $tasks = $query->paginate(10);
-
-        return response()->json(TaskResource::collection($tasks));
+        return TaskResource::collection($tasks);
     }
 
     public function store(StoreTaskRequest $request): JsonResponse
