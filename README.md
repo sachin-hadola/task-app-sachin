@@ -1,59 +1,184 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Task Management Application
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+A simple Task Management application built with **Laravel 12.46** (REST API) and **Vue.js 3** (frontend).  
+This project is part of a technical assessment for a **Senior Backend Developer (Laravel)** role.
 
-## About Laravel
+---
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+## Tech Stack
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+- **Backend:** Laravel 12.46, PHP 8.4+
+- **Frontend:** Vue.js 3 (Vite)
+- **Database:** MySQL
+- **Testing:** PHPUnit (Feature tests)
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+---
 
-## Learning Laravel
+## Features
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework. You can also check out [Laravel Learn](https://laravel.com/learn), where you will be guided through building a modern Laravel application.
+- Task CRUD REST API
+- Vue.js frontend to manage tasks
+- Task status update
+- Soft deletes
+- Pagination (10 items per page)
+- Filter tasks by status
+- Feature tests with database isolation
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+---
 
-## Laravel Sponsors
+## Project Setup Instructions
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+### 1. Clone Repository
 
-### Premium Partners
+```bash
+git clone https://github.com/sachin-hadola/task-app-sachin.git
+cd task-app-sachin
+```
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+---
 
-## Contributing
+### 2. Install Backend Dependencies
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+```bash
+composer install
+```
 
-## Code of Conduct
+---
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+### 3. Environment Configuration 
 
-## Security Vulnerabilities
+Copy `.env.example` to `.env`
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+```bash
+cp .env.example .env
+php artisan key:generate
+```
 
-## License
+Update database credentials in `.env`:
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+```env
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=task_app
+DB_USERNAME=root
+DB_PASSWORD=
+
+SESSION_DRIVER=file
+```
+
+Set application URL:
+
+```env
+APP_URL=Your Project path
+```
+
+---
+
+```bash
+php artisan optimize:clear
+```
+
+---
+
+## Database Setup
+
+### Run Migrations & Seeders
+
+```bash
+php artisan migrate --seed
+```
+
+This will:
+- Create the `tasks` table
+- Insert sample tasks
+
+---
+
+## Running Tests
+
+```bash
+php artisan test
+```
+
+Covered test cases:
+- Create task (success)
+- Create task (validation failure)
+- List tasks
+- Update task
+- Delete task
+
+---
+
+### Run Migrations & Seeders again
+
+```bash
+php artisan migrate --seed
+```
+
+
+## Frontend (Vue.js) Setup
+
+### Install Dependencies
+
+```bash
+npm install
+```
+
+### Run Vite Dev Server
+
+```bash
+npm run dev
+```
+
+### Build Assets (Production)
+
+```bash
+npm run build
+```
+
+---
+
+## Access Application
+
+```
+Eg. http://task-app-sachin.test
+
+OR "php artisan serve"
+```
+
+---
+
+## API Documentation
+
+Base URL:
+
+```
+/api
+```
+
+### List Tasks
+GET `/api/tasks`
+
+Optional filter:
+```
+/api/tasks?status=pending
+```
+
+### Create Task
+POST `/api/tasks`
+
+```json
+{
+  "title": "New Task",
+  "description": "Optional description",
+  "status": "pending",
+  "due_date": "2024-12-31"
+}
+```
+
+### Update Task
+PUT `/api/tasks/{id}`
+
+### Delete Task
+DELETE `/api/tasks/{id}`
