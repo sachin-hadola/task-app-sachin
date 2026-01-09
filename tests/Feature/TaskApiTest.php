@@ -53,5 +53,9 @@ class TaskApiTest extends TestCase
         $response = $this->deleteJson("/api/tasks/{$task->id}");
 
         $response->assertStatus(204);
+
+        $this->assertSoftDeleted('tasks', [
+            'id' => $task->id,
+        ]);
     }
 }
