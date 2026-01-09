@@ -22,7 +22,7 @@ class TaskController extends Controller
         }
 
         // Paginate
-        $tasks = $query->orderBy('id', 'desc')->paginate(5);
+        $tasks = $query->orderBy('id', 'desc')->paginate(10);
 
         return TaskResource::collection($tasks);
     }
